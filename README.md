@@ -13,7 +13,7 @@ desktop - provides wallpaper and application icons
 installer - used to securely install new applications, giving them private directories and default policies as determined by user  
 wifi_applet - simple panel applet to interface with wifi_drv  
 notification_applet - provides notification service for applications  
-calculator - basic calculator
+calculator - basic calculator  
 mount handler - securely provides filesystems and filesystem list to file_manager  
 
 Please feel free to contact me if you want to contribute in any way. Ideas, bug reports, and additional code are welcome.
