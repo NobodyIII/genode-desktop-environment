@@ -3,7 +3,7 @@
 #include "fsnode.h"
 #include "fsregistry.h"
 #include "genodefs.h"
-#include "taskworker.h"
+// #include "taskworker.h"
 
 QString FSNode::canonicalize_path(QString path)
 {
@@ -146,7 +146,7 @@ bool FSNode::_copy(GenodeFS* targetfs, QString targetfspath)
     void* buffer=malloc(buffer_size);
     quint64 bytes_remaining=node_size;
     quint64 offset=0;
-    int readlen;
+    unsigned readlen;
     if (node_size==0) return false;
     NodeHandle src=fs->open(node_fs_path,GenodeFS::MODE_R,false);
     /* XXX add check to prevent overwriting */
@@ -193,10 +193,10 @@ bool FSNode::copy(QString newname)
 }
 
 bool FSNode::copy(FSNode targetdir) {
-    /*if (node_type==NODE_TYPE_DIR) return _copy_recursive(targetdir.fs,targetdir.node_fs_path+"/"+node_name);
+    if (node_type==NODE_TYPE_DIR) return _copy_recursive(targetdir.fs,targetdir.node_fs_path+"/"+node_name);
     GenodeFS* targetfs=targetdir.fs;
-    return _copy(targetfs,targetdir.node_fs_path+"/"+node_name);*/
-    TaskWorker::copy_task(fs,parentdir_path.mid(parentdir_path.indexOf(":/")+1),QStringList(node_name),targetdir.fs,targetdir.node_fs_path);
+    return _copy(targetfs,targetdir.node_fs_path+"/"+node_name);
+//     TaskWorker::copy_task(fs,parentdir_path.mid(parentdir_path.indexOf(":/")+1),QStringList(node_name),targetdir.fs,targetdir.node_fs_path);
 }
 
 bool FSNode::move(FSNode targetdir) {
@@ -253,7 +253,7 @@ bool FSNode::_rm_recursive()
     foreach (FSNode child, children) {
         child.rm();
     }
-    fs->rmdir(node_fs_path);
+    return fs->rmdir(node_fs_path);
 }
 
 bool FSNode::rm()

@@ -23,8 +23,7 @@ SOURCES += main.cpp \
     folderview.cpp \
     dragdropmenu.cpp \
     nodedelegate.cpp \
-    progressdialog.cpp \
-    taskworker.cpp
+    progressdialog.cpp
 
 HEADERS  += mainwindow.h \
     genodefsmodel.h \
@@ -36,7 +35,6 @@ HEADERS  += mainwindow.h \
     dragdropmenu.h \
     nodedelegate.h \
     progressdialog.h \
-    taskworker.h \
     fstreenode.h
 
 FORMS    += mainwindow.ui \

@@ -3,8 +3,10 @@
 
 #ifndef TEST_LINUX
 
+#include <base/heap.h>
 #include <base/allocator_avl.h>
 #include <file_system_session/connection.h>
+#include <libc/component.h>
 
 //using namespace Genode; /* conflicting definitions (e.g. memcpy, strlen) */
 //using namespace File_system;
@@ -36,116 +38,23 @@ public:
     ~GenodeFS();
 
     QString getlabel();
-
-    inline void init() {
-        QMetaObject::invokeMethod(this,"_getlabel",Qt::QueuedConnection);
-    }
-
-    inline NodeStatus stat(QString path) {
-        NodeStatus ret;
-        QMetaObject::invokeMethod(this,"_stat",Qt::BlockingQueuedConnection,Q_RETURN_ARG(NodeStatus,ret),Q_ARG(QString,path));
-        return ret;
-    }
-
-    /*inline QStringList dir(QString dirpath) {
-        QStringList ret;
-        QMetaObject::invokeMethod(this,"_dir",Qt::BlockingQueuedConnection,Q_RETURN_ARG(QStringList,ret),Q_ARG(QString,dirpath));
-        return ret;
-    }*/
-
-    inline QVector<NodeStatus> dir(QString dirpath) {
-        QVector<NodeStatus> ret;
-        QMetaObject::invokeMethod(this,"_dir",Qt::BlockingQueuedConnection,Q_RETURN_ARG(QVector<NodeStatus>,ret),Q_ARG(QString,dirpath));
-        return ret;
-    }
-
-    inline NodeHandle open(QString path, GenodeFS::OPEN_MODE mode, bool create) {
-        NodeHandle ret;
-        QMetaObject::invokeMethod(this,"_open",Qt::BlockingQueuedConnection,Q_RETURN_ARG(NodeHandle,ret),Q_ARG(QString,path),Q_ARG(OPEN_MODE,mode),Q_ARG(bool,create));
-        return ret;
-    }
-
-    inline bool read(NodeHandle node, void *buffer, int bytes, quint64 offset=0) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_read",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(NodeHandle,node),Q_ARG(void*,buffer),Q_ARG(int,bytes),Q_ARG(quint64,offset));
-        return ret;
-    }
-
-    inline bool write(NodeHandle node, void *buffer, int bytes, quint64 offset=0) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_write",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(NodeHandle,node),Q_ARG(void*,buffer),Q_ARG(int,bytes),Q_ARG(quint64,offset));
-        return ret;
-    }
-
-    inline void write_async(NodeHandle node, void *buffer, int bytes, quint64 offset=0) {
-        QMetaObject::invokeMethod(this,"_write",Qt::QueuedConnection,Q_ARG(NodeHandle,node),Q_ARG(void*,buffer),Q_ARG(int,bytes),Q_ARG(quint64,offset));
-    }
-
-    inline bool sync_ops() {
-        QMetaObject::invokeMethod(this,"_dummy",Qt::BlockingQueuedConnection);
-        return true;
-    }
-
-    inline bool move(QString src, QString dest) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_move",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(QString,src),Q_ARG(QString,dest));
-        return ret;
-    }
-
-    inline bool link(QString src, QString dest) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_link",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(QString,src),Q_ARG(QString,dest));
-        return ret;
-    }
-
-    inline bool del(QString path) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_del",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(QString,path));
-        return ret;
-    }
-
-    inline bool close(NodeHandle handle) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_close",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(NodeHandle,handle));
-        return ret;
-    }
-
-    inline bool mkfile(QString path) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_mkfile",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(QString,path));
-        return ret;
-    }
-
-    inline bool mkdir(QString path) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_mkdir",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(QString,path));
-        return ret;
-    }
-
-    inline bool rmdir(QString path) {
-        bool ret;
-        QMetaObject::invokeMethod(this,"_rmdir",Qt::BlockingQueuedConnection,Q_RETURN_ARG(bool,ret),Q_ARG(QString,path));
-        return ret;
-    }
-
-private slots:
-    void _init();
-    void _dummy() { }
-    NodeStatus _stat(QString path);
-    //QStringList _dir(QString dirpath);
-    QVector<NodeStatus> _dir(QString dirpath);
-    NodeHandle _open(QString path, OPEN_MODE mode, bool create);
-    bool _read(NodeHandle node, void *buffer, int bytes, quint64 offset=0); /* use stat to determine size */
-    bool _write(NodeHandle node, void *buffer, int bytes, quint64 offset=0);
-    bool _move(QString src, QString dest);
-    bool _link(QString src, QString dest);
-    bool _del(QString path);
-    bool _close(NodeHandle handle);
-    bool _mkfile(QString path);
-    bool _mkdir(QString path);
-    bool _rmdir(QString path);
+    void init();
+    NodeStatus stat(QString path);
+    QVector<NodeStatus> dir(QString dirpath);
+    NodeHandle open(QString path, OPEN_MODE mode, bool create);
+    bool read(NodeHandle node, void *buffer, unsigned bytes, quint64 offset=0); /* use stat to determine size */
+    bool write(NodeHandle node, void *buffer, unsigned bytes, quint64 offset=0);
+    bool move(QString src, QString dest);
+    bool link(QString src, QString dest);
+    bool del(QString path);
+    bool close(NodeHandle handle);
+    bool mkfile(QString path);
+    bool mkdir(QString path);
+    bool rmdir(QString path);
 
 #ifndef TEST_LINUX
+
+	static void set_env(Libc::Env &env);
     
 private:
     File_system::Node_handle open_node(QString path);
@@ -158,6 +67,8 @@ private:
     File_system::Connection *fs;
     QString label;
     
+	static Libc::Env *_env;
+	static Genode::Heap *_heap;
 #endif
 };
 

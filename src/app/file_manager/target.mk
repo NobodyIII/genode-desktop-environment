@@ -17,7 +17,7 @@ genodefsmodel.o: genodefsmodel.moc
 main_window.o: main_window.moc
 main_window.o: main_window.uic
 nodedelegate.o: nodedelegate.moc
-test_linux.o: test_linux.moc
+#test_linux.o: test_linux.moc
 #main.o: main.moc
 
 LIBS += config qoost

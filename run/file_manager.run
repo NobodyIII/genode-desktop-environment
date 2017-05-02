@@ -9,8 +9,8 @@ append build_components [qt5_build_components feature]
 append build_components {
 	app/file_manager
 	noux-pkg/coreutils
-	server/tar_fs
 	server/ram_fs
+	server/vfs
 }
 
 source ${genode_dir}/repos/base/run/platform_drv.inc
@@ -40,15 +40,18 @@ append config [qt5_start_nodes feature]
 
 append config {
 	<start name="tar_fs">
-		<resource name="RAM" quantum="10M"/>
+		<binary name="vfs"/>
+		<resource name="RAM" quantum="20M"/>
 		<provides><service name="File_system"/></provides>
 		<config>
-			<archive name="coreutils.tar"/>
+			<vfs>
+				<tar name="coreutils.tar"/>
+			</vfs>
 			<policy label="file_manager -> main" root="/" writeable="no" />
 		</config>
 	</start>
 	<start name="ram_fs">
-		<resource name="RAM" quantum="10M"/>
+		<resource name="RAM" quantum="20M"/>
 		<provides><service name="File_system"/></provides>
 		<config>
 			<policy label="file_manager -> ram" root="/" writeable="yes" />
@@ -57,12 +60,11 @@ append config {
 	<start name="file_manager">
 		<resource name="RAM" quantum="100M"/>
 		<config>
-			<libc stdout="/dev/log" stderr="/dev/log">
-				<vfs>
-					<dir name="dev"> <log/> </dir>
-					<tar name="qt5_fs_file_manager.tar"/>
-				</vfs>
-			</libc>
+			<libc stdout="/dev/log" stderr="/dev/log" />
+			<vfs>
+				<dir name="dev"> <log/> </dir>
+				<tar name="qt5_fs_file_manager.tar"/>
+			</vfs>
 		</config>
 		<route>
 			<service name="File_system" label="main"> <child name="tar_fs"/> </service>
@@ -90,7 +92,7 @@ append boot_modules {
 	icu.lib.so
 	ld.lib.so
 	libc.lib.so
-	libc_lock_pipe.lib.so
+	libc_pipe.lib.so
 	libm.lib.so
 	libpng.lib.so
 	jpeg.lib.so
@@ -98,15 +100,14 @@ append boot_modules {
 	qt5_core.lib.so
 	qt5_gui.lib.so
 	qt5_widgets.lib.so
-	qt5_ui_tools.lib.so
 	qt5_xml.lib.so
 	zlib.lib.so
 	stdcxx.lib.so
 	file_manager
 	qt5_fs_file_manager.tar
 	coreutils.tar
-	tar_fs
 	ram_fs
+	vfs
 }
 
 append boot_modules [qt5_boot_modules feature]
@@ -118,6 +119,6 @@ build_boot_image $boot_modules
 #
 
 # qemu config
-append qemu_args " -m 512 "
+append qemu_args " -m 256 "
 
 run_genode_until forever

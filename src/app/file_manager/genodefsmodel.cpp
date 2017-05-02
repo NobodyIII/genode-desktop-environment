@@ -152,6 +152,7 @@ QMimeData *GenodeFSModel::mimeData(const QModelIndexList &indices) const {
 }
 
 bool GenodeFSModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
+	bool ret = true;
     qDebug() << "dropping:" << parent.row();
     if (!data->hasUrls() || !parent.isValid() || (action!=Qt::MoveAction && action!=Qt::CopyAction) || parent.row()<0) return false;
     //FSNode *newdir=static_cast<FSNode*>(parent.internalPointer());
@@ -161,12 +162,13 @@ bool GenodeFSModel::dropMimeData(const QMimeData *data, Qt::DropAction action, i
         FSNode node(url);
         if (node.is_valid() && node.getpath()!=newdir.getpath()) {
             if (action==Qt::MoveAction)
-                node.move(newdir);
+                ret &= node.move(newdir);
             else if (action==Qt::CopyAction)
-                node.copy(newdir);
+                ret &= node.copy(newdir);
         }
     }
     refresh();
+	return ret;
 }
 
 QString GenodeFSModel::url_to_string(QUrl url)
@@ -342,9 +344,12 @@ QList<FSNode> GenodeFSModel::indices_to_nodes(QModelIndexList indices)
 bool GenodeFSModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     //FSNode* node=static_cast<FSNode*>(index.internalPointer());
+	bool ret = false;
     FSNode node=nodes.value(index.row());
-    if (node.is_valid()) node.rename(value.toString());
+    if (node.is_valid())
+		ret = node.rename(value.toString());
     refresh();
+	return ret;
 }
 
 void GenodeFSModel::setSorting(SortingAttribute attr, int dir) {
