@@ -4,7 +4,7 @@
 #include <QItemDelegate>
 #include <QStyledItemDelegate>
 
-class NodeDelegate : public QStyledItemDelegate //QItemDelegate
+class NodeDelegate : public QStyledItemDelegate
 {
 Q_OBJECT
 

@@ -5,14 +5,12 @@
 #include <QTextOption>
 #include <QTextLine>
 #include "nodedelegate.h"
-#include "fsnode.h"
 
 QSize NodeDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QStyleOptionViewItem opt=option;
 	initStyleOption(&opt,index);
-	//QRectF textRect(0,0,opt.rect.width()-4,opt.rect.height()-opt.decorationSize.height()-4);
-	/* use hardcoded values for Genode */
+    /* use hardcoded values for now */
 	QRectF textRect(0,0,96-4,96-opt.decorationSize.height()-4);
 	drawText(NULL,opt,textRect);
 	int width=textRect.width()+4;
@@ -114,7 +112,7 @@ void NodeDelegate::drawText(QPainter* painter, QStyleOptionViewItem& opt, QRectF
 	// draw focus rect
 	QStyleOptionFocusRect o;
 	o.QStyleOption::operator=(opt);
-	o.rect = boundRect.toRect(); // subElementRect(SE_ItemViewItemFocusRect, vopt, widget);
+    o.rect = boundRect.toRect();
 	o.state |= QStyle::State_KeyboardFocusChange;
 	o.state |= QStyle::State_Item;
 	QPalette::ColorGroup cg = (opt.state & QStyle::State_Enabled)

@@ -3,17 +3,17 @@
 
 #include <QtGui>
 #include <QFileIconProvider>
-#include "fsnode.h"
-#include "fsregistry.h"
+#include <QFileInfo>
+#include <QDir>
 
-class GenodeFSModel : public QAbstractItemModel
+class FSModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
     enum SortingAttribute {SORT_NAME, SORT_SIZE};
-    GenodeFSModel();
-    void updateNodes(QList<FSNode> nodes);
+    FSModel();
+    void updateNodes(QList<QFileInfo> nodes);
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -35,7 +35,7 @@ public:
 	QModelIndex new_folder();
 	QModelIndex new_file();
 	void go(QString path);
-	QList<FSNode> indices_to_nodes(QModelIndexList indices);
+    QList<QFileInfo> indices_to_nodes(QModelIndexList indices);
     void setSorting(SortingAttribute attr, int dir=1);
 
 public slots:
@@ -50,16 +50,14 @@ private:
     static QUrl string_to_url(QString str);
     static QStringList urls_to_strings(QList<QUrl> urls);
     static QList<QUrl> strings_to_urls(QStringList strs);
-    //bool nodeComp(const FSNode *node1, const FSNode *node2);
-    FSNode rootItem;
-    QList<FSNode> nodes;
-	QList<FSNode> cut_copy_list;
+    QFileInfo rootItem;
+    QList<QFileInfo> nodes;
+    QList<QFileInfo> cut_copy_list;
 	bool cutting=false;
     QStringList history;
     int hist_pos=-1;
     SortingAttribute sort_attr=SORT_NAME;
     int sort_dir=1;
-    //GenodeFSBackend backend; //change to pointer?
 };
 
 #endif // GENODEFSMODEL_H

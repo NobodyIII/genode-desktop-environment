@@ -7,7 +7,7 @@
 #include <QListView>
 #include <QItemSelectionModel>
 #include <QActionGroup>
-#include "genodefsmodel.h"
+#include "fsmodel.h"
 #include "folderview.h"
 #include "nodedelegate.h"
 
@@ -32,14 +32,14 @@ private:
     static QList<MainWindow*> windows;
 
     Ui::MainWindow *ui;
-	GenodeFSModel *model;
+    FSModel *model;
 	QListView *view;
 	QItemSelectionModel *selection;
     NodeDelegate *delegate;
     QActionGroup *sortGroup;
 
     QLineEdit path_box;
-    GenodeFSModel::SortingAttribute sort_attr;
+    FSModel::SortingAttribute sort_attr;
     int sort_dir;
 
 public slots:
@@ -59,7 +59,6 @@ private slots:
     void new_folder();
     void new_file();
     void go();
-	//void exit();
     void new_window();
     void quit();
     void update_path();

@@ -1,9 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "genodefsmodel.h"
+#include "fsmodel.h"
 #include "nodedelegate.h"
 
-//QFileSystemModel model;
 QList<MainWindow*> MainWindow::windows;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,15 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addWidget(&path_box);
 
     sortGroup=new QActionGroup(this);
-    //ui->actionSortName->setCheckable(true);
-    //ui->actionSortSize->setCheckable(true);
     ui->actionSortName->setActionGroup(sortGroup);
     ui->actionSortSize->setActionGroup(sortGroup);
     ui->actionSortName->setChecked(true);
     connect(sortGroup,SIGNAL(triggered(QAction*)),this,SLOT(setGrouping(QAction*)));
     connect(ui->actionSortDescending,SIGNAL(toggled(bool)),this,SLOT(setGroupingDir(bool)));
 
-    model=new GenodeFSModel();
+    model=new FSModel();
 
 	connect(ui->actionBack,SIGNAL(triggered(bool)),model,SLOT(back()));
 	connect(ui->actionForward,SIGNAL(triggered(bool)),model,SLOT(forward()));
@@ -72,8 +69,6 @@ void MainWindow::cut()
 {
 	model->cut(selection->selectedIndexes());
     QModelIndex index=model->index(0,5);
-    qDebug() << index.isValid();
-    //selection->select(index,QItemSelectionModel::ClearAndSelect);
     view->setCurrentIndex(index);
     view->edit(index);
 }
@@ -163,9 +158,9 @@ void MainWindow::setGroupingDir(bool descending)
 void MainWindow::setGrouping(QAction *selection)
 {
     if (selection==ui->actionSortName)
-        sort_attr=GenodeFSModel::SORT_NAME;
+        sort_attr=FSModel::SORT_NAME;
     else if (selection==ui->actionSortSize)
-        sort_attr=GenodeFSModel::SORT_SIZE;
+        sort_attr=FSModel::SORT_SIZE;
     refresh_sort();
 }
 
