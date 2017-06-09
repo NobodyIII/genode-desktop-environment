@@ -28,3 +28,6 @@ HEADERS  += mainwindow.h \
     fsmodel.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resources.qrc
