@@ -7,7 +7,7 @@ source ${genode_dir}/repos/libports/run/qt5_common.inc
 append build_components [qt5_build_components feature]
 
 append build_components {
-	app/file_manager
+	app/file_manager_qt
 	noux-pkg/coreutils
 	server/ram_fs
 	server/vfs
@@ -20,7 +20,7 @@ build $build_components
 
 create_boot_directory
 
-create_qt5_fs_tar_archive "file_manager" "gui"
+create_qt5_fs_tar_archive "file_manager_qt" "gui"
 
 #
 # Generate config
@@ -32,7 +32,11 @@ append config {
 append config [qt5_parent_provides feature]
 append config {
 	</parent-provides>
+	<default caps="200"/>
 	<default-route>
+		<service name="PD">
+			<parent diag="yes"/>
+		</service>
 		<any-service> <parent/> <child name="wm"/> <any-child/> </any-service>
 	</default-route>}
 
@@ -47,23 +51,23 @@ append config {
 			<vfs>
 				<tar name="coreutils.tar"/>
 			</vfs>
-			<policy label="file_manager -> main" root="/" writeable="no" />
+			<policy label="file_manager_qt -> main" root="/" writeable="no" />
 		</config>
 	</start>
 	<start name="ram_fs">
 		<resource name="RAM" quantum="20M"/>
 		<provides><service name="File_system"/></provides>
 		<config>
-			<policy label="file_manager -> ram" root="/" writeable="yes" />
+			<policy label="file_manager_qt -> ram" root="/" writeable="yes" />
 		</config>
 	</start>
-	<start name="file_manager">
+	<start name="file_manager_qt" caps="1000">
 		<resource name="RAM" quantum="100M"/>
 		<config>
 			<libc stdout="/dev/log" stderr="/dev/log" />
 			<vfs>
 				<dir name="dev"> <log/> </dir>
-				<tar name="qt5_fs_file_manager.tar"/>
+				<tar name="qt5_fs_file_manager_qt.tar"/>
 			</vfs>
 		</config>
 		<route>
@@ -103,11 +107,13 @@ append boot_modules {
 	qt5_xml.lib.so
 	zlib.lib.so
 	stdcxx.lib.so
-	file_manager
-	qt5_fs_file_manager.tar
+	file_manager_qt
+	qt5_fs_file_manager_qt.tar
 	coreutils.tar
 	ram_fs
 	vfs
+	pcre16.lib.so
+	qt5_component.lib.so
 }
 
 append boot_modules [qt5_boot_modules feature]
@@ -119,6 +125,6 @@ build_boot_image $boot_modules
 #
 
 # qemu config
-append qemu_args " -m 256 "
+append qemu_args " -m 512 "
 
 run_genode_until forever
