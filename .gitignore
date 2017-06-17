@@ -1,0 +1,6 @@
+*~
+*.orig
+*.swp
+*.rej
+
+/src/app/build-*
