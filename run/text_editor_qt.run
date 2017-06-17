@@ -1,0 +1,108 @@
+source ${genode_dir}/repos/libports/run/qt5_common.inc
+
+#
+# Build
+#
+
+append build_components [qt5_build_components feature]
+
+append build_components {
+	app/text_editor_qt
+	noux-pkg/coreutils
+	server/ram_fs
+	server/vfs
+}
+
+source ${genode_dir}/repos/base/run/platform_drv.inc
+append_platform_drv_build_components
+
+build $build_components
+
+create_boot_directory
+
+create_qt5_fs_tar_archive "text_editor_qt" "gui"
+
+#
+# Generate config
+#
+
+append config {
+<config>
+	<parent-provides>}
+append config [qt5_parent_provides feature]
+append config {
+	</parent-provides>
+	<default caps="200"/>
+	<default-route>
+		<service name="PD">
+			<parent diag="yes"/>
+		</service>
+		<any-service> <parent/> <child name="wm"/> <any-child/> </any-service>
+	</default-route>}
+
+append config [qt5_start_nodes feature]
+
+append config {
+	<start name="text_editor_qt" caps="1000">
+		<resource name="RAM" quantum="100M"/>
+		<config>
+			<libc stdout="/dev/log" stderr="/dev/log" />
+			<vfs>
+				<dir name="dev"> <log/> </dir>
+				<tar name="qt5_fs_text_editor_qt.tar"/>
+				<dir name="ram_fs"> <ram/> </dir>
+			</vfs>
+		</config>
+		<route>
+			<any-service> <child name="wm"/> <parent/> <any-child/> </any-service>
+		</route>
+	</start>
+}
+#append_platform_drv_config
+
+append config {
+</config>
+}
+
+install_config $config
+
+#
+# Boot modules
+#
+
+# generic modules
+append boot_modules {
+	freetype.lib.so
+	gallium.lib.so
+	icu.lib.so
+	ld.lib.so
+	libc.lib.so
+	libc_pipe.lib.so
+	libm.lib.so
+	libpng.lib.so
+	jpeg.lib.so
+	pthread.lib.so
+	qt5_core.lib.so
+	qt5_gui.lib.so
+	qt5_widgets.lib.so
+	qt5_xml.lib.so
+	zlib.lib.so
+	stdcxx.lib.so
+	text_editor_qt
+	qt5_fs_text_editor_qt.tar
+	pcre16.lib.so
+	qt5_component.lib.so
+}
+
+append boot_modules [qt5_boot_modules feature]
+
+build_boot_image $boot_modules
+
+#
+# Execute test
+#
+
+# qemu config
+append qemu_args " -m 512 "
+
+run_genode_until forever
