@@ -1,10 +1,14 @@
 ## This is my work on a desktop environment for Genode. Currently, the only component is a graphical file manager, which mostly works fairly well.
 
+### Status key:
+[x] = The component is usable and available in master branch on Github.  
+[w] = I have started working on the component; it may or may not be available on Github.  
+
 ### Here is my vision of its future core components:
-file_manager_qt - simple file manager  
-file_dialog - used for opening/saving files; handles requests from fs_filter  
-fs_filter - handles filesystem requests; communicates with file_dialog  
-text_editor - plain text editor; uses file_dialog for open/save; maybe provides syntax highlighting  
+[x] file_manager_qt - simple file manager  
+[w] file_dialog - used for opening/saving files; handles requests from fs_filter  
+[w] fs_filter - handles filesystem requests; communicates with file_dialog  
+[x] text_editor - plain text editor; uses file_dialog for open/save; maybe provides syntax highlighting  
 archive_manager - basic component; uses file_dialog for open/extract  
 login_gui - allows users to login; ideally also can lock screen  
 panel - provides application menu, task manager, and tray for various applets  
@@ -20,4 +24,4 @@ mount handler - securely provides filesystems and filesystem list to file_manage
 Please feel free to contact me if you want to contribute in any way. Ideas, bug reports, and additional code are welcome.
 
 ##### NOTES:  
-1. The file manager is incomplete, but should be functional
+1. The file manager is incomplete, but should be functional.
