@@ -1,4 +1,4 @@
-## This is my work on a desktop environment for Genode. Currently, the only component is a graphical file manager, which mostly works fairly well.
+## This is my work on a desktop environment for Genode. Most of the components haven't been written yet, but some are written and functional.
 
 ### Status key:
 [x] = The component is usable and available in master branch on Github.  
@@ -12,6 +12,7 @@
 archive_manager - basic component; uses file_dialog for open/extract  
 login_gui - allows users to login; ideally also can lock screen  
 panel - provides application menu, task manager, and tray for various applets  
+launcher - securely starts applications (by generating the init config rom) and handles service routing and policies
 
 ### Desirable future components:
 desktop - provides wallpaper and application icons  
@@ -24,4 +25,4 @@ mount handler - securely provides filesystems and filesystem list to file_manage
 Please feel free to contact me if you want to contribute in any way. Ideas, bug reports, and additional code are welcome.
 
 ##### NOTES:  
-1. The file manager is incomplete, but should be functional.
+1. The file manager and text editor are incomplete, but should be functional.
