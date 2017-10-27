@@ -11,10 +11,8 @@ append build_components {
 	noux-pkg/coreutils
 	server/ram_fs
 	server/vfs
+	lib/mesa/swrast
 }
-
-source ${genode_dir}/repos/base/run/platform_drv.inc
-append_platform_drv_build_components
 
 build $build_components
 
@@ -72,26 +70,31 @@ install_config $config
 
 # generic modules
 append boot_modules {
+	text_editor_qt
+	egl.lib.so
+	egl_swrast.lib.so
+	expat.lib.so
 	freetype.lib.so
-	gallium.lib.so
-	icu.lib.so
+	glapi.lib.so
 	ld.lib.so
 	libc.lib.so
 	libc_pipe.lib.so
 	libm.lib.so
 	libpng.lib.so
 	jpeg.lib.so
+	mesa.lib.so
+	pcre16.lib.so
 	pthread.lib.so
+	qt5_component.lib.so
 	qt5_core.lib.so
 	qt5_gui.lib.so
 	qt5_widgets.lib.so
+	qt5_scriptclassic.lib.so
+	qt5_ui_tools.lib.so
 	qt5_xml.lib.so
 	zlib.lib.so
 	stdcxx.lib.so
-	text_editor_qt
 	qt5_fs_text_editor_qt.tar
-	pcre16.lib.so
-	qt5_component.lib.so
 }
 
 append boot_modules [qt5_boot_modules feature]

@@ -13,9 +13,6 @@ append build_components {
 	server/vfs
 }
 
-source ${genode_dir}/repos/base/run/platform_drv.inc
-append_platform_drv_build_components
-
 build $build_components
 
 create_boot_directory
@@ -73,7 +70,7 @@ append config {
 		<route>
 			<service name="File_system" label="main"> <child name="tar_fs"/> </service>
 			<service name="File_system" label="ram"> <child name="ram_fs"/> </service>
-			<any-service> <child name="wm"/> <child name="tar_fs"/> <parent/> <any-child/> </any-service>
+			<any-service> <child name="wm"/> <parent/> <any-child/> </any-service>
 		</route>
 	</start>
 }
@@ -91,23 +88,29 @@ install_config $config
 
 # generic modules
 append boot_modules {
+	file_manager_qt
+	egl.lib.so
+	expat.lib.so
 	freetype.lib.so
-	gallium.lib.so
-	icu.lib.so
+	glapi.lib.so
 	ld.lib.so
 	libc.lib.so
 	libc_pipe.lib.so
 	libm.lib.so
 	libpng.lib.so
 	jpeg.lib.so
+	mesa.lib.so
+	pcre16.lib.so
 	pthread.lib.so
+	qt5_component.lib.so
 	qt5_core.lib.so
 	qt5_gui.lib.so
 	qt5_widgets.lib.so
+	qt5_scriptclassic.lib.so
+	qt5_ui_tools.lib.so
 	qt5_xml.lib.so
 	zlib.lib.so
 	stdcxx.lib.so
-	file_manager_qt
 	qt5_fs_file_manager_qt.tar
 	coreutils.tar
 	ram_fs
