@@ -12,6 +12,6 @@ INC_DIR += $(REP_DIR)/src/lib/libarchive
 
 INC_DIR += $(LIBARCHIVE_DIR)
 
-LIBS += libc zlib libbz2 libcrypto lz4 liblzma
+LIBS += libc zlib libbz2 libcrypto lz4 liblzma expat
 
 SHARED_LIB = yes

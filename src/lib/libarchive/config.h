@@ -41,7 +41,6 @@
 #define HAVE_ARC4RANDOM_BUF 1
 #define HAVE_STRUCT_XVFSCONF 1
 
-#ifdef WITH_OPENSSL
 #define HAVE_LIBCRYPTO 1
 #define HAVE_OPENSSL_EVP_H 1
 #define HAVE_OPENSSL_MD5_H 1
@@ -54,21 +53,6 @@
 #define HAVE_SHA256 1
 #define HAVE_SHA384 1
 #define HAVE_SHA512 1
-#else
-#define HAVE_LIBMD 1
-#define HAVE_MD5_H 1
-#define HAVE_MD5INIT 1
-#define HAVE_RIPEMD_H 1
-#define HAVE_SHA_H 1
-#define HAVE_SHA1 1
-#define HAVE_SHA1_INIT 1
-#define HAVE_SHA256 1
-#define HAVE_SHA256_H 1
-#define HAVE_SHA256_INIT 1
-#define HAVE_SHA512 1
-#define HAVE_SHA512_H 1
-#define HAVE_SHA512_INIT 1
-#endif
 
 #define HAVE_BZLIB_H 1
 #define HAVE_CHOWN 1
@@ -211,28 +195,15 @@
 #define HAVE_ZLIB_H 1
 #define TIME_WITH_SYS_TIME 1
 
-#if __FreeBSD_version >= 1100056
-#define HAVE_FUTIMENS 1
-#define HAVE_UTIMENSAT 1
-#endif
-
-/* FreeBSD 4 and earlier lack intmax_t/uintmax_t */
-#if __FreeBSD__ < 5
-#define intmax_t int64_t
-#define uintmax_t uint64_t
-#endif
-
 /* FreeBSD defines for archive_hash.h */
-#ifdef WITH_OPENSSL
 #define ARCHIVE_CRYPTO_MD5_OPENSSL 1
 #define ARCHIVE_CRYPTO_RMD160_OPENSSL 1
 #define ARCHIVE_CRYPTO_SHA1_OPENSSL
 #define ARCHIVE_CRYPTO_SHA256_OPENSSL 1
 #define ARCHIVE_CRYPTO_SHA384_OPENSSL 1
 #define ARCHIVE_CRYPTO_SHA512_OPENSSL 1
-#else
-#define ARCHIVE_CRYPTO_MD5_LIBMD 1
-#define ARCHIVE_CRYPTO_SHA1_LIBMD 1
-#define ARCHIVE_CRYPTO_SHA256_LIBMD 1
-#define ARCHIVE_CRYPTO_SHA512_LIBMD 1
-#endif
+
+/* libexpat */
+#define HAVE_EXPAT_H 1
+#define HAVE_LIBEXPAT 1
+
