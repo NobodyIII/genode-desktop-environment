@@ -1,15 +1,15 @@
 ## This is my work on a desktop environment for Genode. Most of the components haven't been written yet, but some are written and functional.
 
 ### Status key:
-[x] = The component is usable and available in master branch on Github.  
+[x] = The component is usable and available in the master branch on Github.  
 [w] = I have started working on the component; it may or may not be available on Github.  
 
 ### Here is my vision of its future core components:
 [x] file_manager_qt - simple file manager  
-[w] file_dialog - used for opening/saving files; handles requests from fs_filter  
+file_dialog - used for opening/saving files; handles requests from fs_filter  
 [w] fs_filter - handles filesystem requests; communicates with file_dialog  
 [x] text_editor - plain text editor; uses file_dialog for open/save; maybe provides syntax highlighting  
-archive_manager - basic component; uses file_dialog for open/extract  
+[x] archive_manager - basic archive manager capable of displaying and extracting archive contents, as well as creating archives and adding and deleting files; uses file_dialog for open/extract  
 login_gui - allows users to login; ideally also can lock screen  
 panel - provides application menu, task manager, and tray for various applets  
 launcher - securely starts applications (by generating the init config rom) and handles service routing and policies
