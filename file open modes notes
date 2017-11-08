@@ -1,0 +1,28 @@
+options:
+require read
+require write
+existing (implied by require read)
+allow multiple (only valid for require read)
+directory
+
+valid combos:
+
+single_read: read_only checked,
+multi_read
+single_write
+single_read_write_optional
+multi_read_write_optional
+single_read_write_required
+multi_read_write_required
+dir_read
+dir_write (is this even needed?)
+dir_read_write_optional
+dir_read_write_required
+
+single: all
+multi: read, read_write_optional, read_write_required
+
+checkbox: blank, checked-gray, blank-gray
+blank => any or directory 
+checked-gray => existing
+
