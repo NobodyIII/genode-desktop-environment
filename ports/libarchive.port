@@ -1,0 +1,12 @@
+LICENSE   := BSD
+DOWNLOADS := libarchive.archive
+VERSION   := 3.3.2
+
+URL(libarchive) := https://www.libarchive.org/downloads/libarchive-$(VERSION).tar.gz
+SHA(libarchive) := 580064227105e30322caa6c67b59e8c8e6060027
+DIR(libarchive) := src/lib/libarchive
+
+DIRS := include/libarchive
+DIR_CONTENT(include/libarchive) := \
+    src/lib/libarchive/libarchive/archive.h \
+    src/lib/libarchive/libarchive/archive_entry.h
