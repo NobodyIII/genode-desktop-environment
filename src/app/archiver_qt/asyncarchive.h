@@ -19,12 +19,19 @@
  *    every time a file is added or removed. Consequently, we are delaying write implementation.
  */
 
+enum EXTRACT_FLAGS {
+    EXTRACT_FLAGS_SECURE = ARCHIVE_EXTRACT_SECURE_NOABSOLUTEPATHS | ARCHIVE_EXTRACT_SECURE_NODOTDOT | ARCHIVE_EXTRACT_SECURE_SYMLINKS,
+    EXTRACT_FLAGS_DISABLE_OVERWRITE = EXTRACT_FLAGS_SECURE | ARCHIVE_EXTRACT_NO_OVERWRITE,
+    EXTRACT_FLAGS_DEFAULT = EXTRACT_FLAGS_DISABLE_OVERWRITE, //TODO: ask whether to overwrite
+};
+
 class AsyncArchive: public QObject
 {
     Q_OBJECT
 
 public:
     AsyncArchive();
+    ~AsyncArchive();
 
     bool openArchive(QString archivePath);
     bool createArchive(QString archivePath);

@@ -17,6 +17,9 @@ public:
 
     void populateModel(std::vector<ArchiveEntry> entries);
     void openArchive(QString filePath);
+    void closeArchive();
+    void newArchive(QString filePath);
+    void extractArchive(QString outDir);
 
     // Basic functionality:
     QModelIndex index(int row, int column,
@@ -29,7 +32,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
+//    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
     ArchiveTree _tree;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
-    <height>360</height>
+    <width>526</width>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
        <enum>QAbstractItemView::ExtendedSelection</enum>
       </property>
       <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectItems</enum>
+       <enum>QAbstractItemView::SelectRows</enum>
       </property>
       <attribute name="headerCascadingSectionResizes">
        <bool>true</bool>
@@ -47,7 +47,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>528</width>
+     <width>526</width>
      <height>21</height>
     </rect>
    </property>
@@ -73,9 +73,8 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionFileOpen"/>
-    <addaction name="actionFileOpenWith"/>
     <addaction name="separator"/>
-    <addaction name="actionExtract"/>
+    <addaction name="actionExtractSelection"/>
     <addaction name="separator"/>
     <addaction name="actionDelete"/>
    </widget>
@@ -106,7 +105,6 @@
    </attribute>
    <addaction name="actionOpen"/>
    <addaction name="actionExtractAll"/>
-   <addaction name="actionExtract"/>
    <addaction name="separator"/>
    <addaction name="actionFileOpen"/>
    <addaction name="actionAddFiles"/>
@@ -162,17 +160,12 @@
     <string>&amp;Open File</string>
    </property>
   </action>
-  <action name="actionFileOpenWith">
+  <action name="actionExtractSelection">
    <property name="text">
-    <string>Open File &amp;With...</string>
-   </property>
-  </action>
-  <action name="actionExtract">
-   <property name="text">
-    <string>E&amp;xtract To...</string>
+    <string>E&amp;xtract...</string>
    </property>
    <property name="toolTip">
-    <string>Extract To</string>
+    <string>Extract</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
