@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    setIconSize(QSize(32, 32));
     ui->setupUi(this);
     ui->archiveView->setModel(&_arcModel);
+    ui->archiveView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     /* generate extract icon */
     //TODO: replace with more sensible solution
