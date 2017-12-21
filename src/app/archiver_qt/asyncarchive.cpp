@@ -161,7 +161,6 @@ void AsyncArchive::_readAllEntries(void *result_ptr, void *success_ptr)
 
         case AE_IFLNK:
             type = ENTRY_TYPE_SYMLINK;
-            //TODO: store link target
             break;
 
         default:
