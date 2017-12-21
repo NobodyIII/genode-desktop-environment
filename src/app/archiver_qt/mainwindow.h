@@ -25,11 +25,21 @@ private:
     Ui::MainWindow *ui;
     ArchiveItemModel _arcModel;
 
+    /* re-used dialogs */
+    QString _inputExtractPath();
+    QString _inputSavePath();
 
 public slots:
-    void slotSave();
-    void slotSaveAs();
+    void slotNew();
     void slotOpen();
+    void slotClose();
+    void slotExtractAll();
+    void slotExtractSelection();
+    void slotProperties();
+    void slotSaveAs();
+    void slotFileOpen();
+    void slotDelete();
+    void slotAddFiles();
 };
 
 #endif // MAINWINDOW_H

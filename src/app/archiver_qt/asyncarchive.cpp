@@ -14,6 +14,13 @@ AsyncArchive::AsyncArchive()
     _thread.start();
 }
 
+AsyncArchive::~AsyncArchive()
+{
+    syncArchive();
+    _thread.quit();
+    _thread.wait();
+}
+
 bool AsyncArchive::openArchive(QString archivePath)
 {
     syncArchive();
@@ -50,6 +57,7 @@ bool AsyncArchive::createArchive(QString archivePath)
 void AsyncArchive::closeArchive()
 {
     syncArchive();
+    _archivePath = "";
     _isValid = false;
     _canWrite = false;
 }
@@ -153,7 +161,6 @@ void AsyncArchive::_readAllEntries(void *result_ptr, void *success_ptr)
 
         case AE_IFLNK:
             type = ENTRY_TYPE_SYMLINK;
-            //TODO: store link target
             break;
 
         default:
@@ -172,24 +179,76 @@ void AsyncArchive::_readAllEntries(void *result_ptr, void *success_ptr)
     qDebug() << "finished";
 }
 
-void AsyncArchive::_addFiles(QStringList filePaths, void *success)
+void AsyncArchive::_addFiles(QStringList filePaths, void *success_ptr)
 {
+    qDebug() << "add files stub:" << filePaths;
+    _endOperation();
+
     //TODO: fill stub
 }
 
-void AsyncArchive::_deleteFiles(QStringList filePaths, void *success)
+void AsyncArchive::_deleteFiles(QStringList filePaths, void *success_ptr)
 {
+    qDebug() << "delete files stub:" << filePaths;
+    _endOperation();
+
     //TODO: fill stub
 }
 
 void AsyncArchive::_extractFiles(QString extractPath, QStringList filePaths, void *success_ptr)
 {
+    qDebug() << "extract files stub:" << extractPath << "to" << filePaths;
+    _endOperation();
+
     //TODO: fill stub
 }
 
+//TODO: ask whether to overwrite
 void AsyncArchive::_extractAll(QString extractPath, void *success_ptr)
 {
-    //TODO: fill stub
+    qDebug() << "extract all:" << extractPath;
+
+    bool &success = *(static_cast<bool *>(success_ptr));
+
+    int status;
+
+    archive *arc = archive_read_new();
+    archive_read_support_format_all(arc);
+    archive_read_support_filter_all(arc);
+    /* open archive for reading */
+    status = archive_read_open_filename(arc, _archivePath.toStdString().c_str(), ARCHIVE_BLOCK_SIZE);
+    if (status != ARCHIVE_OK) {
+        /* failure, so cleanup and return */
+        qDebug() << archive_error_string(arc);
+        archive_read_free(arc);
+        success = false;
+        _endOperation();
+        return;
+    }
+
+    /* set directory to extraction path */
+    chdir(extractPath.toStdString().c_str());
+
+    /* iterate over headers/entries */
+    archive_entry *entry;
+    while (archive_read_next_header(arc, &entry) == ARCHIVE_OK) {
+        /* extract entry */
+        status = archive_read_extract(arc, entry, EXTRACT_FLAGS_DEFAULT);
+        if (status != ARCHIVE_OK) {
+            /* failure, so cleanup and return */
+            qDebug() << archive_error_string(arc);
+            archive_read_free(arc);
+            success = false;
+            _endOperation();
+            return;
+        }
+    }
+
+    /* success; cleanup and return */
+    archive_read_free(arc);
+    success = true;
+
+    _endOperation();
 }
 
 void AsyncArchive::_beginOperation()
