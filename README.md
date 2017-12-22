@@ -17,10 +17,10 @@
 [ ] icon_provider - provides icons from icon theme as well as icons for installed applications and file types  
 
 ### Planned core libraries:
-[ ] file_request - opens files (as selected by the user); makes requests to fs_filter
-[ ] file_ident - identifies files; makes requests to file_ident (and possibly file_ident_magic)
-[ ] icon - accesses icons; makes requests to icon_provider
-[ ] launch_extern - launches external applications; can open files with the appropriate applications; makes requests to launcher
+[ ] file_request - opens files (as selected by the user); makes requests to fs_filter  
+[ ] file_ident - identifies files; makes requests to file_ident (and possibly file_ident_magic)  
+[ ] icon - accesses icons; makes requests to icon_provider  
+[ ] launch_extern - launches external applications; can open files with the appropriate applications; makes requests to launcher  
 
 ### Additional planned libraries:
 [ ] notify - provides notifications to the user; makes requests to notification_applet
