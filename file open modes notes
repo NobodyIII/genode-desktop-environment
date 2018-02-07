@@ -26,3 +26,52 @@ checkbox: blank, checked-gray, blank-gray
 blank => any or directory 
 checked-gray => existing
 
+scenarios:
+any file, possibly creating (rw) (modify or overwrite)
+existing file (ro, rw)
+directory (ro, rw) (show or hide files)
+existing files (ro, rw)
+
+identifiers and titles:
+(cs) Create File (AnyFile, rw); overwrite warning
+(ws) Create/Modify File (AnyFile, rw)
+(ms) Modify File (ExistingFile, rw)
+(os) Open File (ExistingFile, ro or rw)
+(rs) Read File (ExistingFile, ro)
+(mm) Modify Files (ExistingFiles, rw)
+(om) Open Files (ExistingFiles, ro or rw)
+(rm) Read Files (ExistingFiles, ro)
+(md) Modify Directory (Directory, rw)
+(od) Open Directory (Directory, ro or rw)
+(rd) Read Directory (Directory, ro)
+
+open file (ro) (single,multi)
+open file and possibly update it (ro or rw) (single,multi)
+open file for input and modification (rw) (single,multi)
+
+checks:
+	exists (with different prompts and responses)
+(cs) Create File (AnyFile, rw)
+	overwrite warning
+	writeable
+(ws) Create/Modify File (AnyFile, rw)
+	overwrite warning (different text)
+	writeable
+(ms) Modify File (ExistingFile, rw)
+	writeable
+(os) Open File (ExistingFile, ro or rw)
+	readable/writeable
+(rs) Read File (ExistingFile, ro)
+	readable
+(mm) Modify Files (ExistingFiles, rw)
+	writeable
+(om) Open Files (ExistingFiles, ro or rw)
+	readable/writeable
+(rm) Read Files (ExistingFiles, ro)
+	readable
+(md) Modify Directory (Directory, rw)
+	writeable
+(od) Open Directory (Directory, ro or rw)
+	readable/writeable
+(rd) Read Directory (Directory, ro)
+	readable

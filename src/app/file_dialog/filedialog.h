@@ -10,27 +10,37 @@ class FileDialog : public QFileDialog
 {
     Q_OBJECT
 public:
-    enum OpenFlags {
-        DEFAULT = 0x00,
-        READ_ONLY_OPTION_DISABLED = 0x01, /* read-only checkbox is disabled */
-        READ_ONLY_OPTION_SET = 0x02, /* read-only checkbox is checked by default */
-
-        DIRECTORY = 0x04, /* to be used in conjunction with another mode */
-        EXISTING_SINGLE = 0x08,
-        EXISTING_MULTI = 0x10,
-
-        /* combinations of flags */
-        READ_ONLY = 0x06, /* read-only checkbox is set and disabled */
-        WRITE_REQUIRED = 0x02, /* read-only checkbox is unset and disabled */
+    /* "Open" is used to indicate that the file will be read, and can optionally be written to */
+    enum DialogMode {
+        Create_File,
+        Create_or_Modify_File,
+        Modify_File,
+        Open_File,
+        Read_File,
+        Modify_Files,
+        Open_Files,
+        Read_Files,
+        Modify_Directory,
+        Open_Directory,
+        Read_Directory,
     };
-    explicit FileDialog(QString title, OpenFlags mode, QString filter);
+    explicit FileDialog(QString request);
 
 signals:
 
 public slots:
+//    void _handleFilterSelect(QString filter);
+
+protected:
+    void accept() override;
 
 private:
-    QCheckBox *readOnlyBox;
+    DialogMode _mode;
+    QCheckBox *_readOnlyBox;
+    QCheckBox *_autoExtenBox;
+
+    void _parseRequest(const QString request);
+    QString _addFileExten(const QString file_path);
 };
 
 #endif // FILEDIALOG_H
