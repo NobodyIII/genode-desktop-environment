@@ -29,7 +29,7 @@ public:
 signals:
 
 public slots:
-//    void _handleFilterSelect(QString filter);
+    void updateSuffix();
 
 protected:
     void accept() override;
@@ -40,7 +40,10 @@ private:
     QCheckBox *_autoExtenBox;
 
     void _parseRequest(const QString request);
-    QString _addFileExten(const QString file_path);
+
+    bool _verifyFileCreate(QFileInfo info);
+    bool _verifyFileExists(QFileInfo info, bool is_dir);
+    bool _verifyFileWritable(QFileInfo info, bool is_dir, bool allow_create = false);
 };
 
 #endif // FILEDIALOG_H

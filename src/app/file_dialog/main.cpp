@@ -8,9 +8,9 @@ int main(int argc, char *argv[])
 
     //TODO: get options from config
 
-    FileDialog dialog(""); //(0, "Open File", "", "");
-    dialog.exec();
-    qDebug() << dialog.selectedFiles();
+    FileDialog dialog("");
+    if (dialog.exec())
+        qDebug() << dialog.selectedFiles();
 
     //TODO: report file selection
 
