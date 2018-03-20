@@ -119,6 +119,9 @@ append config {
 }
 install_config $config
 
+# copy example image to run dir
+file copy [genode_dir]/repos/gems/src/app/backdrop/genode_logo.png [run_dir]/genode/
+
 # generic modules
 set boot_modules {
 	core ld.lib.so init
@@ -129,7 +132,6 @@ set boot_modules {
 	image_renderer
 	libc.lib.so libm.lib.so
 	libpng.lib.so zlib.lib.so
-	genode_logo.png
 }
 
 # platform-specific modules
