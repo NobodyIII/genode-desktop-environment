@@ -5,8 +5,9 @@
 #include <util/string.h>
 
 #include "image_loader.h"
-#include "image_format_png.h"
 #include "framebuffer_painter.h"
+#include "image_format_png.h"
+#include "image_format_flif.h"
 
 using namespace Genode;
 
@@ -25,6 +26,7 @@ struct Image_renderer::Main
 		/* initialize */
 		Image_loader loader(env, heap);
 		loader.add_format<Image_format_png>();
+		loader.add_format<Image_format_flif>();
 
 		/* load image */
 		File_path image_path;
