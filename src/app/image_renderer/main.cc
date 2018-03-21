@@ -43,6 +43,8 @@ struct Image_renderer::Main
 
 		/* paint image to framebuffer */
 		Framebuffer_painter::paint(env, heap, framebuf, img_data);
+
+		env.parent().exit(0);
 	}
 };
 
