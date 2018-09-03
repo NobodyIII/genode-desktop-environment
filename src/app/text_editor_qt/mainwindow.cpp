@@ -96,6 +96,7 @@ bool MainWindow::_save()
     //TODO: handle incomplete write
     file.write(fileData.toUtf8());
     setModified(false);
+    updateTitle(); /* force update to handle case when an unmodified file is saved under a new name */
     return true;
 }
 
