@@ -108,9 +108,9 @@ append config {
 			<service name="Framebuffer"/>
 			<service name="Input"/>
 		</provides>
-		<config xpos="0" ypos="0" width="640" height="480" refresh_rate="25" use_alpha="yes"/>
+		<config xpos="0" ypos="0" width="640" height="480" refresh_rate="25" alpha="yes"/>
 	</start>
-	<start name="image_renderer">
+	<start name="image_renderer" caps="300">
 		<resource name="RAM" quantum="30M"/>
 		<!-- <config image="/test.flif"> -->
 		<config image="/genode_logo.png">
