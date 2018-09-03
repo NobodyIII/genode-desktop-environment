@@ -30,7 +30,6 @@ private:
     void closeEvent(QCloseEvent *event);
 
     static QList<MainWindow *> _windows;
-    static bool _openFile();
     static void _closeAll();
 
 public slots:

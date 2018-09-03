@@ -113,32 +113,31 @@ void MainWindow::updateTitle()
 
 }
 
-bool MainWindow::_openFile()
+void MainWindow::openFile()
 {
     QString name = Util::openFile();
 
     if (name.isEmpty())
-        return false;
+        return;
 
     QFile file(name);
 
     if (!file.open(QFile::ReadOnly))
-        return false;
+        return;
 
     QTextStream stream(&file);
-    MainWindow *win = new MainWindow;
+
+    MainWindow *win;
+    if (ui->textArea->document()->isEmpty())
+        win = this; /* when empty, use the same window rather than creating a new one */
+    else
+        win = new MainWindow;
+
     QString text = stream.readAll();
     win->ui->textArea->setPlainText(text);
     win->setModified(false);
     win->filename = name;
     win->updateTitle();
-    return true;
-}
-
-void MainWindow::openFile()
-{
-    if (_openFile() && ui->textArea->document()->isEmpty())
-        close();
 }
 
 bool MainWindow::isModified()
