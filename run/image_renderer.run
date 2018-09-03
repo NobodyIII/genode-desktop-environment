@@ -4,6 +4,14 @@
 # \date   2012-05-21
 #
 
+#
+# Download test FLIF file
+#
+if {![file exist bin/test.flif]} {
+        set pdf_url "https://github.com/sveinbjornt/Phew/raw/master/sample-images/train.flif"
+        catch { exec wget $pdf_url -O bin/test.flif }
+}
+
 set build_components {
 	core
 	init
@@ -104,9 +112,11 @@ append config {
 	</start>
 	<start name="image_renderer">
 		<resource name="RAM" quantum="30M"/>
+		<!-- <config image="/test.flif"> -->
 		<config image="/genode_logo.png">
 			<libc/>
 			<vfs>
+				<rom name="test.flif"/>
 				<rom name="genode_logo.png"/>
 			</vfs>
 		</config>
@@ -132,6 +142,9 @@ set boot_modules {
 	image_renderer
 	libc.lib.so libm.lib.so
 	libpng.lib.so zlib.lib.so
+	libflif.lib.so stdcxx.lib.so
+	vfs.lib.so
+	test.flif
 }
 
 # platform-specific modules
