@@ -20,11 +20,13 @@ FSModel::FSModel()
 
 QModelIndex FSModel::index(int row, int column, const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return createIndex(row,column,(quintptr)0);
 }
 
 int FSModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return nodes.size();
 }
 
@@ -71,6 +73,8 @@ QVariant FSModel::data(const QModelIndex &index, int role) const
 
 QVariant FSModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    Q_UNUSED(orientation);
+
     if(role == Qt::DisplayRole)
     switch(section) {
     case 0: return tr("Name");
@@ -90,6 +94,7 @@ Qt::ItemFlags FSModel::flags(const QModelIndex &index) const
 
 QModelIndex FSModel::parent(const QModelIndex &index) const
 {
+    Q_UNUSED(index);
     return QModelIndex();
 }
 
@@ -113,7 +118,10 @@ QMimeData *FSModel::mimeData(const QModelIndexList &indices) const {
 }
 
 bool FSModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
-	bool ret = true;
+    Q_UNUSED(row);
+    Q_UNUSED(column);
+
+    bool ret = true;
     if (!data->hasUrls() || !parent.isValid() || (action!=Qt::MoveAction && action!=Qt::CopyAction) || parent.row()<0) return false;
     QFileInfo newdir=nodes.value(parent.row());
     if (!newdir.isDir() || newdir.absoluteFilePath() == rootItem.absoluteFilePath()) return false;
