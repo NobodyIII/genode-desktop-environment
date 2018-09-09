@@ -1,24 +1,20 @@
 source ${genode_dir}/repos/libports/run/qt5_common.inc
 
+import_from_depot [depot_user]/src/qt5_component \
+                  [depot_user]/src/qt5_scriptclassic \
+                  [depot_user]/src/qt5_ui_tools \
+                  [depot_user]/src/qt5_widgets
+
 #
 # Build
 #
 
-append build_components [qt5_build_components feature]
-
 append build_components {
 	app/text_editor_qt
-	noux-pkg/coreutils
-	server/ram_fs
-	server/vfs
-	lib/mesa/swrast
 }
+append build_components [qt5_build_components feature]
 
 build $build_components
-
-create_boot_directory
-
-create_qt5_fs_tar_archive "text_editor_qt" "gui"
 
 #
 # Generate config
@@ -47,18 +43,17 @@ append config {
 			<libc stdout="/dev/log" stderr="/dev/log" />
 			<vfs>
 				<dir name="dev"> <log/> </dir>
-				<tar name="qt5_fs_text_editor_qt.tar"/>
+				<tar name="qt5_dejavusans.tar"/>
 				<dir name="ram_fs"> <ram/> </dir>
 			</vfs>
 		</config>
 		<route>
+			<service name="Report" label="shape">
+				<child name="pointer" label="wm -> text_editor_qt -> shape"/>
+			</service>
 			<any-service> <child name="wm"/> <parent/> <any-child/> </any-service>
 		</route>
 	</start>
-}
-#append_platform_drv_config
-
-append config {
 </config>
 }
 
@@ -68,33 +63,9 @@ install_config $config
 # Boot modules
 #
 
-# generic modules
+# add text_editor_qt to boot modules
 append boot_modules {
 	text_editor_qt
-	egl.lib.so
-	egl_swrast.lib.so
-	expat.lib.so
-	freetype.lib.so
-	glapi.lib.so
-	ld.lib.so
-	libc.lib.so
-	libc_pipe.lib.so
-	libm.lib.so
-	libpng.lib.so
-	jpeg.lib.so
-	mesa.lib.so
-	pcre16.lib.so
-	pthread.lib.so
-	qt5_component.lib.so
-	qt5_core.lib.so
-	qt5_gui.lib.so
-	qt5_widgets.lib.so
-	qt5_scriptclassic.lib.so
-	qt5_ui_tools.lib.so
-	qt5_xml.lib.so
-	zlib.lib.so
-	stdcxx.lib.so
-	qt5_fs_text_editor_qt.tar
 }
 
 append boot_modules [qt5_boot_modules feature]
