@@ -232,15 +232,6 @@ void FSModel::del(QModelIndexList indices)
     refresh();
 }
 
-void FSModel::rename(QModelIndex index, QString new_name)
-{
-    if (index.isValid()) {
-        QFileInfo node=nodes.value(index.row());
-        if (node.exists()) node.absoluteDir().rename(node.fileName(), new_name);
-        refresh();
-    }
-}
-
 QModelIndex FSModel::new_folder()
 {
     QString new_name="New Folder";
@@ -301,10 +292,13 @@ QList<QFileInfo> FSModel::indices_to_nodes(QModelIndexList indices)
 
 bool FSModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(role);
+
+    /* rename file */
 	bool ret = false;
     QFileInfo node=nodes.value(index.row());
     if (node.exists())
-        ret = QFile::rename(node.absoluteFilePath(), value.toString());
+        ret = QFile::rename(node.absoluteFilePath(), rootItem.absoluteFilePath() + "/" + value.toString());
     refresh();
 	return ret;
 }

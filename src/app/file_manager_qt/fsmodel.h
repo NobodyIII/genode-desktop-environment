@@ -31,7 +31,6 @@ public:
 	void copy(QModelIndexList indices);
 	void paste();
 	void del(QModelIndexList indices);
-	void rename(QModelIndex index, QString new_name);
 	QModelIndex new_folder();
 	QModelIndex new_file();
 	void go(QString path);
