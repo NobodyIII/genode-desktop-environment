@@ -1,5 +1,13 @@
 source ${genode_dir}/repos/libports/run/qt5_common.inc
 
+import_from_depot [depot_user]/src/qt5_component \
+                  [depot_user]/src/qt5_scriptclassic \
+                  [depot_user]/src/qt5_ui_tools \
+                  [depot_user]/src/qt5_widgets \
+                  [depot_user]/src/vfs \
+                  [depot_user]/src/vfs_import \
+                  [depot_user]/src/coreutils
+
 #
 # Build
 #
@@ -8,16 +16,9 @@ append build_components [qt5_build_components feature]
 
 append build_components {
 	app/file_manager_qt
-	noux-pkg/coreutils
-	server/ram_fs
-	server/vfs
 }
 
 build $build_components
-
-create_boot_directory
-
-create_qt5_fs_tar_archive "file_manager_qt" "gui"
 
 #
 # Generate config
@@ -40,22 +41,17 @@ append config {
 append config [qt5_start_nodes feature]
 
 append config {
-	<start name="tar_fs">
-		<binary name="vfs"/>
+	<start name="vfs">
 		<resource name="RAM" quantum="20M"/>
 		<provides><service name="File_system"/></provides>
 		<config>
 			<vfs>
-				<tar name="coreutils.tar"/>
+				<ram/>
+				<import>
+					<tar name="coreutils.tar"/>
+				</import>
 			</vfs>
-			<policy label="file_manager_qt -> main" root="/" writeable="no" />
-		</config>
-	</start>
-	<start name="ram_fs">
-		<resource name="RAM" quantum="20M"/>
-		<provides><service name="File_system"/></provides>
-		<config>
-			<policy label="file_manager_qt -> ram" root="/" writeable="yes" />
+			<policy label_prefix="file_manager_qt" root="/" writeable="yes" />
 		</config>
 	</start>
 	<start name="file_manager_qt" caps="1000">
@@ -64,19 +60,18 @@ append config {
 			<libc stdout="/dev/log" stderr="/dev/log" />
 			<vfs>
 				<dir name="dev"> <log/> </dir>
-				<tar name="qt5_fs_file_manager_qt.tar"/>
+				<tar name="qt5_dejavusans.tar"/>
+				<dir name="rw"> <fs/> </dir>
 			</vfs>
 		</config>
 		<route>
-			<service name="File_system" label="main"> <child name="tar_fs"/> </service>
-			<service name="File_system" label="ram"> <child name="ram_fs"/> </service>
+			<service name="File_system"> <child name="vfs"/> </service>
+			<service name="Report" label="shape">
+				<child name="pointer" label="wm -> file_manager_qt -> shape"/>
+			</service>
 			<any-service> <child name="wm"/> <parent/> <any-child/> </any-service>
 		</route>
 	</start>
-}
-#append_platform_drv_config
-
-append config {
 </config>
 }
 
@@ -89,34 +84,6 @@ install_config $config
 # generic modules
 append boot_modules {
 	file_manager_qt
-	egl.lib.so
-	expat.lib.so
-	freetype.lib.so
-	glapi.lib.so
-	ld.lib.so
-	libc.lib.so
-	libc_pipe.lib.so
-	libm.lib.so
-	libpng.lib.so
-	jpeg.lib.so
-	mesa.lib.so
-	pcre16.lib.so
-	pthread.lib.so
-	qt5_component.lib.so
-	qt5_core.lib.so
-	qt5_gui.lib.so
-	qt5_widgets.lib.so
-	qt5_scriptclassic.lib.so
-	qt5_ui_tools.lib.so
-	qt5_xml.lib.so
-	zlib.lib.so
-	stdcxx.lib.so
-	qt5_fs_file_manager_qt.tar
-	coreutils.tar
-	ram_fs
-	vfs
-	pcre16.lib.so
-	qt5_component.lib.so
 }
 
 append boot_modules [qt5_boot_modules feature]
