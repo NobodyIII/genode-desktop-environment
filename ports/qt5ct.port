@@ -1,0 +1,7 @@
+LICENSE   := BSD
+VERSION   := 0.36
+DOWNLOADS := qt5ct.archive
+
+URL(qt5ct) := https://sourceforge.net/projects/qt5ct/files/qt5ct-$(VERSION).tar.bz2
+SHA(qt5ct) := 8fc3942f34d377af5533a0953cca633a7babc60c0476fd4318b617702183ee89
+DIR(qt5ct) := src/qt5ct
