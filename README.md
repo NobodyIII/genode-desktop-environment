@@ -1,3 +1,9 @@
+# This repository is dead. Anything reasonably stable will be moved to BGG or BGDE.
+
+## I started this before I really knew how to use Git properly. I made several branches without a good naming scheme, and I made this repository into a bit of a mess. I intended to rename the project anyway, so I decided to start fresh rather than trying to clean up this repository.
+
+## ------------------------------------
+
 ## This is my work on a desktop environment for Genode. Most of the components haven't been written yet, but some are written and functional.
 
 ### Status key:
